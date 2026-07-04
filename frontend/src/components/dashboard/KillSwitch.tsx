@@ -19,6 +19,13 @@ const KILL_SWITCH_ABI = [
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
+  },
+  {
+    "inputs": [{ "name": "newCooldownSeconds", "type": "uint256" }],
+    "name": "setCooldown",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   }
 ];
 
@@ -108,9 +115,26 @@ export default function KillSwitch({ state }: { state?: SharedState }) {
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-background rounded-xl p-4 border border-border">
-            <p className="text-[10px] text-muted uppercase tracking-wider mb-1">Cooldown</p>
-            <p className="font-mono text-base font-medium">{ks?.cooldown_seconds || 0}s</p>
+          <div className="bg-background rounded-xl p-4 border border-border flex items-center justify-between">
+            <div>
+              <p className="text-[10px] text-muted uppercase tracking-wider mb-1">Cooldown</p>
+              <p className="font-mono text-base font-medium">{ks?.cooldown_seconds || 0}s</p>
+            </div>
+            {ks?.cooldown_seconds !== 10 && (
+              <button 
+                onClick={() => writeContract({
+                  address: state?.contracts?.killSwitch as `0x${string}`,
+                  abi: KILL_SWITCH_ABI,
+                  functionName: 'setCooldown',
+                  args: [BigInt(10)]
+                })}
+                disabled={isPending || isConfirming || !isConnected}
+                className="text-[10px] bg-[#F3E8FF] text-[#836EF9] hover:bg-[#E9D5FF] px-2 py-1 rounded font-semibold transition-colors flex items-center gap-1"
+                title="Reduce cooldown to 10 seconds"
+              >
+                ⚡ Set 10s
+              </button>
+            )}
           </div>
           <div className="bg-background rounded-xl p-4 border border-border">
             <p className="text-[10px] text-muted uppercase tracking-wider mb-1">Health</p>
