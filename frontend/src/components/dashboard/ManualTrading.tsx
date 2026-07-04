@@ -75,7 +75,7 @@ export default function ManualTrading({ state }: { state?: SharedState }) {
     const actionEnum = tradeType === "BUY" ? 0 : 1;
     const size = parseEther(amount);
     
-    const killSwitchAddr = state?.contracts?.killSwitch || "0x7Cd79d8146002bD32496C26Aa06E9eEA5Ab1d787";
+    const killSwitchAddr = state?.contracts?.killSwitch || "0x7B4140ff2ffA34A60ac3F3203b7E8156d93256d8";
     const dexRouterAddr = state?.contracts?.dexRouter || "0xD99D1c33F9fC3444f8101754aBC46c52416550D1";
 
     writeContract({
