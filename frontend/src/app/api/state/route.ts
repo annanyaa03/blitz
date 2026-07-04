@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
+import { createPublicClient, http, formatEther, parseAbi } from "viem";
 
 export const dynamic = "force-dynamic";
 
@@ -106,19 +107,6 @@ export async function GET() {
     const pnl = json.portfolio?.pnl_quote || 0;
     const winRate = pnl > 0 ? 100 : (pnl < 0 ? 0 : 50);
 
-    // Risk Level (derived from KillSwitch status and PnL)
-    const riskLevel = json.kill_switch?.paused ? "HIGH" : (pnl < -100 ? "ELEVATED" : "NORMAL");
-
-    // Add computed fields
-    json.computed = {
-      ema5: sma5,
-      ema20: sma20,
-      marketTrend,
-      avgConfidence,
-      winRate,
-      riskLevel
-    };
-
     // Load root .env variables
     const envPath = path.resolve(process.cwd(), "../.env");
     let killSwitchAddress = "";
@@ -134,9 +122,57 @@ export async function GET() {
     }
 
     // Attach addresses
+    const activeKillSwitch = killSwitchAddress || process.env.KILLSWITCH_ADDRESS || "0x7B4140ff2ffA34A60ac3F3203b7E8156d93256d8";
     json.contracts = {
-      killSwitch: killSwitchAddress || process.env.KILLSWITCH_ADDRESS || "",
+      killSwitch: activeKillSwitch,
       dexRouter: dexRouterAddress || process.env.DEX_ROUTER_ADDRESS || ""
+    };
+
+    // --- Live On-Chain KillSwitch Query ---
+    if (activeKillSwitch) {
+      try {
+        const client = createPublicClient({
+          transport: http("https://testnet-rpc.monad.xyz")
+        });
+        const abi = parseAbi([
+          'function paused() view returns (bool)',
+          'function dailyCap() view returns (uint256)',
+          'function tradedToday() view returns (uint256)',
+          'function cooldownSeconds() view returns (uint256)'
+        ]);
+        const [paused, dailyCap, tradedToday, cooldown] = await Promise.all([
+          client.readContract({ address: activeKillSwitch as `0x${string}`, abi, functionName: 'paused' }),
+          client.readContract({ address: activeKillSwitch as `0x${string}`, abi, functionName: 'dailyCap' }),
+          client.readContract({ address: activeKillSwitch as `0x${string}`, abi, functionName: 'tradedToday' }),
+          client.readContract({ address: activeKillSwitch as `0x${string}`, abi, functionName: 'cooldownSeconds' }),
+        ]);
+
+        const capNum = Number(formatEther(dailyCap));
+        const tradedNum = Number(formatEther(tradedToday));
+
+        json.kill_switch = {
+          ...json.kill_switch,
+          status: paused ? "PAUSED" : "ACTIVE",
+          paused: Boolean(paused),
+          daily_cap: capNum,
+          remaining_cap: Math.max(0, capNum - tradedNum),
+          traded_today: tradedNum,
+          cooldown_seconds: Number(cooldown)
+        };
+      } catch (err) {
+        // Fallback to static state if RPC fails
+      }
+    }
+
+    // Risk Level (derived from live KillSwitch status and PnL)
+    const riskLevel = json.kill_switch?.paused ? "HIGH" : (pnl < -100 ? "ELEVATED" : "NORMAL");
+    json.computed = {
+      ema5: sma5,
+      ema20: sma20,
+      marketTrend,
+      avgConfidence,
+      winRate,
+      riskLevel
     };
 
     return NextResponse.json(json);
