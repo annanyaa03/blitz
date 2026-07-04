@@ -61,7 +61,7 @@ export default function TradingModeSelection({
         className="mb-8 flex flex-col items-start justify-between gap-4 border-b border-border/40 pb-6"
       >
         <div className="flex items-center gap-2.5">
-          <span className="inline-flex items-center justify-center w-2 h-2 rounded-full bg-[#836EF9] animate-ping" />
+          <span className="inline-flex items-center justify-center w-2 h-2 rounded-none bg-[#836EF9] animate-ping" />
           <span className="text-[11px] font-mono uppercase tracking-[0.25em] text-muted font-semibold">
             Operating Modes // Monad Engine
           </span>
@@ -77,7 +77,7 @@ export default function TradingModeSelection({
       </motion.div>
 
       {/* Main 50/50 Split Canvas */}
-      <div className="relative rounded-3xl border border-border/60 bg-card/40 dark:bg-[#111318]/60 backdrop-blur-3xl shadow-2xl overflow-hidden transition-all duration-500">
+      <div className="relative rounded-none border border-border/60 bg-card/40 dark:bg-[#111318]/60 backdrop-blur-3xl shadow-2xl overflow-hidden transition-all duration-500">
         
         {/* Ambient Gradient Glows based on Hover */}
         <div 
@@ -118,7 +118,7 @@ export default function TradingModeSelection({
             {/* Top Header Badge */}
             <div>
               <div className="flex items-center justify-between mb-8">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-500 text-xs font-mono font-medium tracking-wide">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-none bg-blue-500/10 border border-blue-500/20 text-blue-500 text-xs font-mono font-medium tracking-wide">
                   <Shield size={13} className="fill-blue-500/20" />
                   <span>HUMAN-IN-THE-LOOP</span>
                 </div>
@@ -147,7 +147,7 @@ export default function TradingModeSelection({
                       transition={{ delay: idx * 0.05 }}
                       className="flex items-center gap-3 text-sm md:text-base text-foreground/80 group-hover:text-foreground transition-colors"
                     >
-                      <div className="w-6 h-6 rounded-lg bg-blue-500/10 flex items-center justify-center shrink-0 border border-blue-500/20 group-hover:scale-110 transition-transform">
+                      <div className="w-6 h-6 rounded-none bg-blue-500/10 flex items-center justify-center shrink-0 border border-blue-500/20 group-hover:scale-110 transition-transform">
                         {cap.icon}
                       </div>
                       <span className="font-light tracking-wide">{cap.text}</span>
@@ -164,7 +164,7 @@ export default function TradingModeSelection({
                   e.stopPropagation();
                   onSelectMode("copilot");
                 }}
-                className="w-full py-4 px-8 rounded-2xl bg-foreground text-background font-medium text-base tracking-wide flex items-center justify-center gap-3 shadow-xl shadow-black/5 group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-blue-500/25 transition-all duration-300 active:scale-[0.99]"
+                className="w-full py-4 px-8 rounded-none bg-foreground text-background font-medium text-base tracking-wide flex items-center justify-center gap-3 shadow-xl shadow-black/5 group-hover:bg-blue-600 group-hover:text-white group-hover:shadow-blue-500/25 transition-all duration-300 active:scale-[0.99]"
               >
                 <span>Launch AI Copilot</span>
                 <ArrowRight size={18} className="group-hover:translate-x-1.5 transition-transform duration-300" />
@@ -187,7 +187,7 @@ export default function TradingModeSelection({
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.2, duration: 0.6 }}
-              className="relative z-10 flex flex-col items-center justify-center px-5 py-5 bg-card dark:bg-[#151921] backdrop-blur-2xl border border-border/80 rounded-3xl shadow-2xl shadow-black/30 text-center w-52 md:w-60 hover:border-[#836EF9]/60 transition-all duration-300 group/divider"
+              className="relative z-10 flex flex-col items-center justify-center px-5 py-5 bg-card dark:bg-[#151921] backdrop-blur-2xl border border-border/80 rounded-none shadow-2xl shadow-black/30 text-center w-52 md:w-60 hover:border-[#836EF9]/60 transition-all duration-300 group/divider"
             >
               <motion.div
                 animate={{ y: [0, 4, 0] }}
@@ -209,7 +209,7 @@ export default function TradingModeSelection({
                 ↓
               </motion.div>
               
-              <span className="text-[10px] font-mono uppercase tracking-widest text-[#836EF9] font-medium bg-[#836EF9]/10 px-3 py-1 rounded-full border border-[#836EF9]/20 mt-0.5 group-hover/divider:bg-[#836EF9] group-hover/divider:text-white transition-all">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-[#836EF9] font-medium bg-[#836EF9]/10 px-3 py-1 rounded-none border border-[#836EF9]/20 mt-0.5 group-hover/divider:bg-[#836EF9] group-hover/divider:text-white transition-all">
                 Switch Anytime
               </span>
             </motion.div>
@@ -227,7 +227,7 @@ export default function TradingModeSelection({
             {/* Top Header Badge */}
             <div>
               <div className="flex items-center justify-between mb-8">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#836EF9]/10 border border-[#836EF9]/20 text-[#836EF9] text-xs font-mono font-medium tracking-wide">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-none bg-[#836EF9]/10 border border-[#836EF9]/20 text-[#836EF9] text-xs font-mono font-medium tracking-wide">
                   <Zap size={13} className="fill-[#836EF9]/20" />
                   <span>AUTONOMOUS EXECUTION</span>
                 </div>
@@ -256,7 +256,7 @@ export default function TradingModeSelection({
                       transition={{ delay: idx * 0.05 }}
                       className="flex items-center gap-3 text-sm md:text-base text-foreground/80 group-hover:text-foreground transition-colors"
                     >
-                      <div className="w-6 h-6 rounded-lg bg-[#836EF9]/10 flex items-center justify-center shrink-0 border border-[#836EF9]/20 group-hover:scale-110 transition-transform">
+                      <div className="w-6 h-6 rounded-none bg-[#836EF9]/10 flex items-center justify-center shrink-0 border border-[#836EF9]/20 group-hover:scale-110 transition-transform">
                         {cap.icon}
                       </div>
                       <span className="font-light tracking-wide">{cap.text}</span>
@@ -273,7 +273,7 @@ export default function TradingModeSelection({
                   e.stopPropagation();
                   onSelectMode("autopilot");
                 }}
-                className="w-full py-4 px-8 rounded-2xl bg-[#836EF9] text-white font-medium text-base tracking-wide flex items-center justify-center gap-3 shadow-xl shadow-[#836EF9]/20 hover:bg-[#725cf0] hover:shadow-[#836EF9]/40 transition-all duration-300 active:scale-[0.99]"
+                className="w-full py-4 px-8 rounded-none bg-[#836EF9] text-white font-medium text-base tracking-wide flex items-center justify-center gap-3 shadow-xl shadow-[#836EF9]/20 hover:bg-[#725cf0] hover:shadow-[#836EF9]/40 transition-all duration-300 active:scale-[0.99]"
               >
                 <span>Launch AI Autopilot</span>
                 <ArrowRight size={18} className="group-hover:translate-x-1.5 transition-transform duration-300" />
@@ -289,9 +289,9 @@ export default function TradingModeSelection({
       </div>
 
       {/* Shared Infrastructure Banner */}
-      <div className="mt-6 flex flex-wrap items-center justify-between gap-4 px-6 py-4 rounded-2xl bg-card/20 border border-border/40 backdrop-blur-md text-xs text-muted">
+      <div className="mt-6 flex flex-wrap items-center justify-between gap-4 px-6 py-4 rounded-none bg-card/20 border border-border/40 backdrop-blur-md text-xs text-muted">
         <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+          <div className="w-2 h-2 rounded-none bg-green-500 animate-pulse" />
           <span className="font-medium text-foreground">Monad Testnet Connected</span>
           <span className="hidden sm:inline">• Shared Portfolio, Wallets & Activity History</span>
         </div>

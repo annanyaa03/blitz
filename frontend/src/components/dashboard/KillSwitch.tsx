@@ -73,7 +73,7 @@ export default function KillSwitch({ state }: { state?: SharedState }) {
           <h3 className="font-semibold text-lg text-foreground">Daily Limit</h3>
           <p className="text-sm text-muted">Risk Management Contract</p>
         </div>
-        <div className={`px-3 py-1.5 rounded-full text-xs font-medium flex items-center gap-2 border ${isLocked ? "bg-[#FEF2F2] border-[#FCA5A5] text-[#DC2626]" : "bg-[#F0FDF4] border-[#86EFAC] text-[#16A34A]"}`}>
+        <div className={`px-3 py-1.5 rounded-none text-xs font-medium flex items-center gap-2 border ${isLocked ? "bg-[#FEF2F2] border-[#FCA5A5] text-[#DC2626]" : "bg-[#F0FDF4] border-[#86EFAC] text-[#16A34A]"}`}>
           {isLocked ? <ShieldAlert size={14} /> : <ShieldCheck size={14} />}
           {isLocked ? `LOCKED: ${ks?.status}` : "SYSTEM ACTIVE"}
         </div>
@@ -92,7 +92,7 @@ export default function KillSwitch({ state }: { state?: SharedState }) {
               initial={{ strokeDashoffset: 502.6 }}
               animate={{ strokeDashoffset: 502.6 * (1 - (usagePercent / 100)) }}
               transition={{ duration: 1.5, ease: "easeOut" }}
-              strokeLinecap="round"
+              strokeLinecap="butt"
             />
           </svg>
           <div className="absolute flex flex-col items-center justify-center text-center">
@@ -115,7 +115,7 @@ export default function KillSwitch({ state }: { state?: SharedState }) {
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-background rounded-xl p-4 border border-border flex items-center justify-between">
+          <div className="bg-background rounded-none p-4 border border-border flex items-center justify-between">
             <div>
               <p className="text-[10px] text-muted uppercase tracking-wider mb-1">Cooldown</p>
               <p className="font-mono text-base font-medium">{ks?.cooldown_seconds || 0}s</p>
@@ -129,14 +129,14 @@ export default function KillSwitch({ state }: { state?: SharedState }) {
                   args: [BigInt(10)]
                 })}
                 disabled={isPending || isConfirming || !isConnected}
-                className="text-[10px] bg-[#F3E8FF] text-[#836EF9] hover:bg-[#E9D5FF] px-2 py-1 rounded font-semibold transition-colors flex items-center gap-1"
+                className="text-[10px] bg-[#F3E8FF] text-[#836EF9] hover:bg-[#E9D5FF] px-2 py-1 rounded-none font-semibold transition-colors flex items-center gap-1"
                 title="Reduce cooldown to 10 seconds"
               >
-                ⚡ Set 10s
+                Set 10s
               </button>
             )}
           </div>
-          <div className="bg-background rounded-xl p-4 border border-border">
+          <div className="bg-background rounded-none p-4 border border-border">
             <p className="text-[10px] text-muted uppercase tracking-wider mb-1">Health</p>
             <div className={`flex items-center gap-1.5 font-medium text-sm ${getHealthColor()}`}>
               <Activity size={14} /> {isLocked ? "CRITICAL" : usagePercent > 80 ? "WARNING" : "OPTIMAL"}
@@ -147,7 +147,7 @@ export default function KillSwitch({ state }: { state?: SharedState }) {
         <button 
           onClick={handleToggle}
           disabled={isButtonDisabled}
-          className={`w-full py-4 rounded-xl font-medium transition-all flex items-center justify-center gap-2 ${
+          className={`w-full py-4 rounded-none font-medium transition-all flex items-center justify-center gap-2 ${
             isLocked 
               ? "bg-foreground hover:bg-black text-background" 
               : "bg-card border border-border hover:bg-[#FEF2F2] hover:border-[#FCA5A5] hover:text-[#DC2626] text-muted"

@@ -93,7 +93,7 @@ export default function ManualTrading({ state }: { state?: SharedState }) {
   }, [isConfirmed]);
 
   return (
-    <div className="bg-card rounded-3xl h-full flex flex-col relative overflow-hidden">
+    <div className="bg-card rounded-none h-full flex flex-col relative overflow-hidden">
       
       {/* Mode Switcher */}
       <div className="flex border-b border-border">
@@ -114,11 +114,11 @@ export default function ManualTrading({ state }: { state?: SharedState }) {
       <div className="p-6 flex-1 flex flex-col">
         {mode === "MANUAL" ? (
           <div className="flex-1 flex flex-col h-full space-y-6">
-            <div className="flex bg-muted/20 p-1 rounded-xl">
-              <button onClick={() => setTradeType("BUY")} className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-all ${tradeType === "BUY" ? "bg-card text-[#16A34A] shadow-sm" : "text-muted"}`}>
+            <div className="flex bg-muted/20 p-1 rounded-none">
+              <button onClick={() => setTradeType("BUY")} className={`flex-1 py-2.5 rounded-none text-sm font-medium transition-all ${tradeType === "BUY" ? "bg-card text-[#16A34A] shadow-sm" : "text-muted"}`}>
                 Buy MONAD
               </button>
-              <button onClick={() => setTradeType("SELL")} className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-all ${tradeType === "SELL" ? "bg-card text-[#DC2626] shadow-sm" : "text-muted"}`}>
+              <button onClick={() => setTradeType("SELL")} className={`flex-1 py-2.5 rounded-none text-sm font-medium transition-all ${tradeType === "SELL" ? "bg-card text-[#DC2626] shadow-sm" : "text-muted"}`}>
                 Sell MONAD
               </button>
             </div>
@@ -128,7 +128,7 @@ export default function ManualTrading({ state }: { state?: SharedState }) {
                 <label className="text-xs font-semibold text-muted uppercase tracking-wider block">Trade Amount</label>
                 <div className="flex gap-1.5">
                   {[25, 50, 75, 100].map(pct => (
-                    <button key={pct} onClick={() => handlePercentage(pct)} className="text-[10px] font-medium bg-background border border-border hover:border-[#836EF9] hover:text-[#836EF9] text-muted px-2 py-1 rounded transition-colors">
+                    <button key={pct} onClick={() => handlePercentage(pct)} className="text-[10px] font-medium bg-background border border-border hover:border-[#836EF9] hover:text-[#836EF9] text-muted px-2 py-1 rounded-none transition-colors">
                       {pct === 100 ? 'MAX' : `${pct}%`}
                     </button>
                   ))}
@@ -137,13 +137,13 @@ export default function ManualTrading({ state }: { state?: SharedState }) {
               <div className="relative">
                 <input 
                   type="number" value={amount} onChange={(e) => { setAmount(e.target.value); if (error) reset(); }} placeholder="0.00"
-                  className="w-full bg-background border border-border rounded-2xl pl-6 pr-20 py-4 text-2xl font-mono focus:outline-none focus:border-[#836EF9] focus:ring-1 focus:ring-[#836EF9] transition-all"
+                  className="w-full bg-background border border-border rounded-none pl-6 pr-20 py-4 text-2xl font-mono focus:outline-none focus:border-[#836EF9] focus:ring-1 focus:ring-[#836EF9] transition-all"
                 />
                 <span className="absolute right-6 top-1/2 -translate-y-1/2 text-foreground font-semibold">{tradeType === "BUY" ? "USDC" : "MONAD"}</span>
               </div>
             </div>
 
-            <div className="bg-background rounded-2xl p-4 border border-border space-y-3">
+            <div className="bg-background rounded-none p-4 border border-border space-y-3">
               <div className="flex justify-between text-sm">
                 <span className="text-muted">Price</span>
                 <span className="font-mono text-foreground">${currentMonadPrice > 0 ? currentMonadPrice.toFixed(4) : "---"}</span>
@@ -155,14 +155,15 @@ export default function ManualTrading({ state }: { state?: SharedState }) {
             </div>
 
             {(state?.kill_switch?.paused || state?.kill_switch?.status === 'PAUSED') && (
-              <div className="bg-[#FFFBEB] border border-[#FDE68A] rounded-xl p-3 text-xs text-[#D97706]">
-                ⚠️ <b>System Paused</b>: Trading is locked by the KillSwitch. Please click <b>"Authorize System Reset"</b> in the Daily Limit widget to unpause.
+              <div className="bg-[#FFFBEB] border border-[#FDE68A] rounded-none p-3 text-xs text-[#D97706] flex items-start gap-2">
+                <AlertCircle size={16} className="shrink-0 mt-0.5" />
+                <div><b>System Paused</b>: Trading is locked by the KillSwitch. Please click <b>"Authorize System Reset"</b> in the Daily Limit widget to unpause.</div>
               </div>
             )}
 
             {error && (
-              <div className="bg-[#FEF2F2] border border-[#FCA5A5] rounded-xl p-3 text-xs text-[#DC2626] flex items-center justify-between">
-                <span>⚠️ {error.shortMessage || error.message || "Transaction failed"}</span>
+              <div className="bg-[#FEF2F2] border border-[#FCA5A5] rounded-none p-3 text-xs text-[#DC2626] flex items-center justify-between">
+                <span className="flex items-center gap-2"><AlertCircle size={16} className="shrink-0" /> {error.shortMessage || error.message || "Transaction failed"}</span>
                 <button onClick={() => reset()} className="underline font-semibold ml-2 whitespace-nowrap">Reset</button>
               </div>
             )}
@@ -170,7 +171,7 @@ export default function ManualTrading({ state }: { state?: SharedState }) {
             <button 
               onClick={() => setShowConfirm(true)}
               disabled={!isConnected || isPending || isConfirming || !amount || numAmount <= 0}
-              className={`w-full mt-auto py-4 rounded-2xl font-medium text-background transition-all flex items-center justify-center gap-2 ${
+              className={`w-full mt-auto py-4 rounded-none font-medium text-background transition-all flex items-center justify-center gap-2 ${
                 !isConnected || !amount || numAmount <= 0 || isPending || isConfirming ? "bg-[#D1D5DB] cursor-not-allowed text-[#9CA3AF]" : 
                 tradeType === "BUY" ? "bg-foreground hover:bg-black" : "bg-[#DC2626] hover:bg-[#B91C1C]"
               }`}
@@ -188,8 +189,8 @@ export default function ManualTrading({ state }: { state?: SharedState }) {
           </div>
         ) : (
           <div className="flex-1 flex flex-col h-full space-y-6">
-            <div className={`p-6 rounded-3xl border-2 flex flex-col items-center justify-center text-center transition-colors ${autonomousEnabled ? "border-[#836EF9] bg-[#836EF9]/5" : "border-border bg-background"}`}>
-              <div className={`w-16 h-16 rounded-full flex items-center justify-center mb-4 ${autonomousEnabled ? "bg-[#836EF9] text-background shadow-lg shadow-[#836EF9]/30" : "bg-[#E5E7EB] text-[#9CA3AF]"}`}>
+            <div className={`p-6 rounded-none border-2 flex flex-col items-center justify-center text-center transition-colors ${autonomousEnabled ? "border-[#836EF9] bg-[#836EF9]/5" : "border-border bg-background"}`}>
+              <div className={`w-16 h-16 rounded-none flex items-center justify-center mb-4 ${autonomousEnabled ? "bg-[#836EF9] text-background shadow-lg shadow-[#836EF9]/30" : "bg-[#E5E7EB] text-[#9CA3AF]"}`}>
                 {autonomousEnabled ? <Play size={24} className="ml-1" /> : <Pause size={24} />}
               </div>
               <h4 className="text-xl font-semibold mb-2">{autonomousEnabled ? "System Running" : "System Paused"}</h4>
@@ -198,21 +199,21 @@ export default function ManualTrading({ state }: { state?: SharedState }) {
               </p>
               <button 
                 onClick={() => setAutonomousEnabled(!autonomousEnabled)}
-                className={`mt-6 px-8 py-3 rounded-full text-sm font-medium transition-all ${autonomousEnabled ? "bg-card text-[#DC2626] border border-[#DC2626]/20 hover:bg-[#FEF2F2]" : "bg-foreground text-background hover:bg-black"}`}
+                className={`mt-6 px-8 py-3 rounded-none text-sm font-medium transition-all ${autonomousEnabled ? "bg-card text-[#DC2626] border border-[#DC2626]/20 hover:bg-[#FEF2F2]" : "bg-foreground text-background hover:bg-black"}`}
               >
                 {autonomousEnabled ? "Pause Trading" : "Enable Autonomous Mode"}
               </button>
             </div>
 
             <div className="grid grid-cols-2 gap-4 flex-1">
-              <div className="border border-border rounded-2xl p-4">
+              <div className="border border-border rounded-none p-4">
                 <p className="text-[10px] uppercase tracking-wider text-muted mb-2">Next Evaluation</p>
                 <p className="font-mono text-sm text-foreground">in 12s</p>
               </div>
-              <div className="border border-border rounded-2xl p-4">
+              <div className="border border-border rounded-none p-4">
                 <p className="text-[10px] uppercase tracking-wider text-muted mb-2">AI Health</p>
                 <div className="flex items-center gap-1.5 font-medium text-[#16A34A] text-sm">
-                  <div className="w-1.5 h-1.5 bg-[#16A34A] rounded-full animate-pulse" />
+                  <div className="w-1.5 h-1.5 bg-[#16A34A] rounded-none animate-pulse" />
                   Optimal
                 </div>
               </div>
@@ -227,14 +228,14 @@ export default function ManualTrading({ state }: { state?: SharedState }) {
             <button onClick={() => setShowConfirm(false)} className="absolute top-6 right-6 text-muted hover:text-foreground"><X size={24} /></button>
             <h4 className="text-2xl font-medium tracking-tight mb-2">Confirm Execution</h4>
             <p className="text-muted mb-8">Review transaction details below.</p>
-            <div className="bg-background rounded-3xl p-6 border border-border mb-8">
+            <div className="bg-background rounded-none p-6 border border-border mb-8">
               <p className="text-sm text-muted mb-2">{tradeType === "BUY" ? "Paying" : "Selling"}</p>
               <p className="text-4xl font-mono tracking-tight text-foreground mb-6">{amount} <span className="text-xl text-muted">{tradeType === "BUY" ? "USDC" : "MONAD"}</span></p>
               <div className="h-px bg-[#E5E7EB] w-full mb-6" />
               <p className="text-sm text-muted mb-2">Receiving (Est.)</p>
               <p className="text-3xl font-mono text-[#836EF9]">{estimatedReceived.toFixed(6)} <span className="text-lg text-muted">{tradeType === "BUY" ? "MONAD" : "USDC"}</span></p>
             </div>
-            <button onClick={handleTrade} className="w-full py-5 rounded-2xl font-medium text-background bg-foreground hover:bg-black text-lg">
+            <button onClick={handleTrade} className="w-full py-5 rounded-none font-medium text-background bg-foreground hover:bg-black text-lg">
               Confirm on Wallet
             </button>
           </motion.div>
