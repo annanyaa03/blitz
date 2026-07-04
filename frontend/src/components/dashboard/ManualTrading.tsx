@@ -136,7 +136,7 @@ export default function ManualTrading({ state }: { state?: SharedState }) {
               </div>
               <div className="relative">
                 <input 
-                  type="number" value={amount} onChange={(e) => setAmount(e.target.value)} placeholder="0.00"
+                  type="number" value={amount} onChange={(e) => { setAmount(e.target.value); if (error) reset(); }} placeholder="0.00"
                   className="w-full bg-background border border-border rounded-2xl pl-6 pr-20 py-4 text-2xl font-mono focus:outline-none focus:border-[#836EF9] focus:ring-1 focus:ring-[#836EF9] transition-all"
                 />
                 <span className="absolute right-6 top-1/2 -translate-y-1/2 text-foreground font-semibold">{tradeType === "BUY" ? "USDC" : "MONAD"}</span>
@@ -154,15 +154,36 @@ export default function ManualTrading({ state }: { state?: SharedState }) {
               </div>
             </div>
 
+            {(state?.kill_switch?.paused || state?.kill_switch?.status === 'PAUSED') && (
+              <div className="bg-[#FFFBEB] border border-[#FDE68A] rounded-xl p-3 text-xs text-[#D97706]">
+                ⚠️ <b>System Paused</b>: Trading is locked by the KillSwitch. Please click <b>"Authorize System Reset"</b> in the Daily Limit widget to unpause.
+              </div>
+            )}
+
+            {error && (
+              <div className="bg-[#FEF2F2] border border-[#FCA5A5] rounded-xl p-3 text-xs text-[#DC2626] flex items-center justify-between">
+                <span>⚠️ {error.shortMessage || error.message || "Transaction failed"}</span>
+                <button onClick={() => reset()} className="underline font-semibold ml-2 whitespace-nowrap">Reset</button>
+              </div>
+            )}
+
             <button 
               onClick={() => setShowConfirm(true)}
               disabled={!isConnected || isPending || isConfirming || !amount || numAmount <= 0}
               className={`w-full mt-auto py-4 rounded-2xl font-medium text-background transition-all flex items-center justify-center gap-2 ${
-                !isConnected || !amount || numAmount <= 0 ? "bg-[#D1D5DB] cursor-not-allowed text-[#9CA3AF]" : 
+                !isConnected || !amount || numAmount <= 0 || isPending || isConfirming ? "bg-[#D1D5DB] cursor-not-allowed text-[#9CA3AF]" : 
                 tradeType === "BUY" ? "bg-foreground hover:bg-black" : "bg-[#DC2626] hover:bg-[#B91C1C]"
               }`}
             >
-              {!isConnected ? "Connect Wallet" : `${tradeType === "BUY" ? "Review Buy" : "Review Sell"}`}
+              {isPending ? (
+                <> <Loader2 size={18} className="animate-spin inline" /> Waiting for Wallet... </>
+              ) : isConfirming ? (
+                <> <Loader2 size={18} className="animate-spin inline" /> Confirming on-chain... </>
+              ) : !isConnected ? (
+                "Connect Wallet"
+              ) : (
+                `${tradeType === "BUY" ? "Review Buy" : "Review Sell"}`
+              )}
             </button>
           </div>
         ) : (
